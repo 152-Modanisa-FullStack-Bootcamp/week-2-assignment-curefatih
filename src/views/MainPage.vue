@@ -4,14 +4,14 @@
       <video-card
         class="video-wrapper"
         :video="video"
-        v-for="video in videos"
+        v-for="video in videos.data"
         :key="video.id"
       />
     </div>
-    <div class="error-message" v-if="error">
+    <div class="error-message" v-if="videos.error">
       <p>There was an error loading the videos. Please try again later.</p>
     </div>
-    <div class="loading-message" v-if="loading">
+    <div class="loading-message" v-if="videos.loading">
       <p>Loading videos...</p>
     </div>
   </div>
@@ -19,31 +19,13 @@
 
 <script>
 import VideoCard from "../components/VideoCard.vue";
-import axios from "axios";
 
 export default {
   components: { VideoCard },
-  data() {
-    return {
-      error: false,
-      loading: true,
-      videos: [],
-    };
-  },
-
-  mounted() {
-    axios
-      .get(process.env.VUE_APP_DATA_ENDPOINT)
-      .then((response) => {
-        console.log(response);
-        this.loading = false;
-        this.videos = response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-        this.errored = true;
-      })
-      .finally(() => (this.loading = false));
+  computed: {
+    videos() {
+      return this.$store.state.videos;
+    },
   },
 };
 </script>

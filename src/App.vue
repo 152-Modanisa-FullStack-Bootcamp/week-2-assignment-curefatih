@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import Container from "./components/Container.vue";
 import Header from "./components/Header.vue";
 export default {
@@ -15,6 +16,11 @@ export default {
   components: {
     Header,
     Container,
+  },
+  mounted() {
+    axios.get(process.env.VUE_APP_DATA_ENDPOINT).then((response) => {
+      this.$store.commit("setVideos", response.data);
+    });
   },
 };
 </script>

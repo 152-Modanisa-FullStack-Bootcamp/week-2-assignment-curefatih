@@ -4,18 +4,23 @@
       <h4>{{ this.$route.params.userId }}<span>'s favorite videos</span></h4>
     </div>
 
-    <div class="video-list" v-if="!error && !loading">
+    <div
+      class="video-list"
+      v-if="
+        !this.$store.state.videos.error && !this.$store.state.videos.loading
+      "
+    >
       <video-card
-        v-for="video in favoritevideos"
+        v-for="video in favorites"
         :video="video"
         expand
         :key="video.id"
       />
     </div>
-    <div class="error-message" v-if="error">
+    <div class="error-message" v-if="$store.state.videos.error">
       <p>There was an error loading the videos. Please try again later.</p>
     </div>
-    <div class="loading-message" v-if="loading">
+    <div class="loading-message" v-if="$store.state.videos.loading">
       <p>Loading videos...</p>
     </div>
   </div>
@@ -23,34 +28,16 @@
 
 <script>
 import VideoCard from "../components/VideoCard.vue";
-import axios from "axios";
 
 export default {
   components: { VideoCard },
-  data() {
-    return {
-      error: false,
-      loading: true,
-      videos: [],
-    };
-  },
   computed: {
-    favoritevideos() {
-      return this.videos.filter((video) => video.favorite);
+    favorites() {
+      return this.$store.getters.favorites;
     },
   },
   mounted() {
-    axios
-      .get(process.env.VUE_APP_DATA_ENDPOINT)
-      .then((response) => {
-        console.log(response);
-        this.videos = response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-        this.errored = true;
-      })
-      .finally(() => (this.loading = false));
+    console.log(this);
   },
 };
 </script>
