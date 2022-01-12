@@ -1,5 +1,9 @@
 <template>
-  <div class="">
+  <div id="favorite-page">
+    <div class="page-info">
+      <h4>{{ this.$route.params.userId }}<span>'s favorite videos</span></h4>
+    </div>
+
     <div class="video-list" v-if="!error && !loading">
       <video-card
         v-for="video in favoritevideos"
@@ -58,5 +62,9 @@ export default {
   justify-content: space-between;
   gap: 20px;
   align-items: flex-start;
+}
+.page-info h4 span {
+  font-style: italic;
+  font-weight: normal;
 }
 </style>
